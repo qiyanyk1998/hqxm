@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>ECharts</title>
+    <script type="text/javascript" src="https://cdn.goeasy.io/goeasy-1.0.3.js"></script>
+    <script src="./boot/js/jquery-2.2.1.min.js"></script>
+    <!-- 引入 echarts.js -->
+    <script src="./echarts/echarts.min.js"></script>
+</head>
+<body>
+<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+<div id="main" style="width: 600px;height:400px;"></div>
+<script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('main'));
+
+    // 指定图表的配置项和数据
+    var option = {
+        title: {
+            text: 'ECharts 入门示例'
+        },
+        tooltip: {},
+        legend: {
+            data:['销量']
+        },
+        xAxis: {
+            data: ["今天注册的用户数量","一周内注册的用户数量","一个月内注册的用户数量","一年内注册的用户数量"]
+        },
+        yAxis: {}
+        /*series: [{
+            name: '销量',
+            type: 'bar',
+            data: [5, 20, 36, 10, 10, 20]
+        },{
+                name: '销量www',
+                type: 'bar',
+                data: [3, 20, 6, 110, 10, 210]
+            }]*/
+    };
+
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+
+
+   $.ajax({
+        url:"user/selectSex",
+       type:"get",
+       datatype:"json",
+       success:function (data) {
+           myChart.setOption({
+               series: [{
+                   name: '男',
+                   // line 折线形式(反应趋势) bar 柱状图(统计数量)  pie 饼状图(反应比例)
+                   type: 'bar',
+                   data: data.man
+               },{
+                   name: '女',
+                   type: 'bar',
+                   data: data.women
+               }]
+           });
+       }
+   });
+</script>
+</body>
+</html>
